@@ -1,0 +1,29 @@
+﻿CREATE TABLE public.persona (
+	id serial4 NOT NULL,
+	nombre varchar(30) NOT NULL,
+	apellido varchar(30) NOT NULL,
+	edad int4 NULL,
+	email varchar(60) NULL,
+	telefono varchar(15) NOT NULL,
+	CONSTRAINT persona_pk PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX persona_id_idx ON public.persona USING btree (id);
+
+CREATE TABLE public.cuenta (
+	idcuenta integer NOT NULL GENERATED ALWAYS AS IDENTITY,
+	idpersona integer NOT NULL,
+	nombrecuenta varchar(50) NOT NULL,
+	numerocuenta varchar(10) NOT NULL,
+	saldo double precision NOT NULL,
+	limite double precision NOT NULL,
+	moneda varchar(4) NOT NULL,
+	estado varchar(15) NULL,
+	CONSTRAINT cuenta_pk PRIMARY KEY (idcuenta),
+	CONSTRAINT cuenta_un UNIQUE (numerocuenta)
+)
+TABLESPACE pg_default
+;
+
+ALTER TABLE public.cuenta ADD CONSTRAINT cuenta_fk FOREIGN KEY (idpersona) REFERENCES public.persona(id);
+
